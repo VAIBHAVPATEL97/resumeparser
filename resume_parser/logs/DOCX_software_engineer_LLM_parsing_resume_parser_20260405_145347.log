@@ -1,0 +1,21 @@
+2026-04-05 14:53:52,365 [INFO] resume_parser.extractors.strategies - LLMExtractionStrategy initialized with Gemini model: gemini-3-flash-preview
+2026-04-05 14:53:52,542 [INFO] resume_parser.extractors.strategies - LLMExtractionStrategy initialized with Gemini model: gemini-3-flash-preview
+2026-04-05 14:53:52,873 [INFO] resume_parser.extractors.strategies - LLMExtractionStrategy initialized with Gemini model: gemini-3-flash-preview
+2026-04-05 14:53:52,874 [INFO] root - Selected parser WordParser for file sample_word_resume.docx
+2026-04-05 14:53:52,971 [INFO] resume_parser.core.resume_extractor - Starting resume extraction with extractors: {'name': 'NameExtractor', 'email': 'EmailExtractor', 'skills': 'SkillsExtractor'}
+2026-04-05 14:53:52,972 [INFO] resume_parser.core.resume_extractor - Extracting field name using extractor NameExtractor
+2026-04-05 14:53:52,972 [INFO] root - Extracting name using strategy: LLMExtractionStrategy
+2026-04-05 14:53:52,973 [INFO] google_genai.models - AFC is enabled with max remote calls: 10.
+2026-04-05 14:54:01,994 [INFO] httpx - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-04-05 14:54:01,996 [INFO] resume_parser.extractors.strategies - Gemini API call made. Result cached for future field extractions.
+2026-04-05 14:54:01,997 [INFO] resume_parser.core.resume_extractor - Extracting field email using extractor EmailExtractor
+2026-04-05 14:54:01,998 [INFO] root - Extracting email using strategy: LLMExtractionStrategy
+2026-04-05 14:54:01,999 [INFO] google_genai.models - AFC is enabled with max remote calls: 10.
+2026-04-05 14:54:06,264 [INFO] httpx - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-04-05 14:54:06,268 [INFO] resume_parser.extractors.strategies - Gemini API call made. Result cached for future field extractions.
+2026-04-05 14:54:06,270 [INFO] resume_parser.core.resume_extractor - Extracting field skills using extractor SkillsExtractor
+2026-04-05 14:54:06,272 [INFO] root - Extracting skills using strategy: LLMExtractionStrategy
+2026-04-05 14:54:06,273 [INFO] google_genai.models - AFC is enabled with max remote calls: 10.
+2026-04-05 14:54:10,017 [INFO] httpx - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent "HTTP/1.1 200 OK"
+2026-04-05 14:54:10,023 [INFO] resume_parser.extractors.strategies - Gemini API call made. Result cached for future field extractions.
+2026-04-05 14:54:10,025 [INFO] __main__ - Extracted resume data: {'name': '', 'email': '', 'skills': ['AWS', 'Angular Material', 'Clean Code', 'Data structures and algorithms', 'Git', 'Go', 'Java', 'Kotlin', 'MySQL', 'Nodejs', 'Postgres', 'Swift']}
