@@ -31,7 +31,7 @@ The Resume Parser extracts key information (name, email, skills) from resume doc
 
 ## Core Components
 
-### 1. Extraction Strategies (`resume_parser/extractors/strategies.py`)
+### 1. Extraction Strategies (`extractors/strategies.py`)
 
 **Base Class: `ExtractionStrategy`**
 ```python
@@ -46,7 +46,7 @@ class ExtractionStrategy(ABC):
 
 **Implementations:**
 
-- **`RegexExtractionStrategy`** (Default)
+- **`RegexExtractionStrategy`** (Fallback when LLMExtractionStrategy raises exemption )
   - Fast, pattern-based extraction using regular expressions
   - No external dependencies
   - Good for well-formatted resumes
@@ -58,14 +58,14 @@ class ExtractionStrategy(ABC):
   - Better entity recognition capabilities
   - Not yet implemented
 
-- **`LLMExtractionStrategy`** (Google Gemini)
+- **`LLMExtractionStrategy`** (Default-Google Gemini)
   - Uses Google Gemini API for intelligent extraction
   - Makes single API call to extract all fields via `extract_all()`
   - **Smart Caching**: Results cached by text hash; subsequent calls reuse cached result (e.g., when extracting name, email, skills from same resume, only 1 API call is made)
   - Falls back to `RegexExtractionStrategy` when LLM fails
   - Supports custom models and API keys
 
-### 2. Field Extractors (`resume_parser/extractors/`)
+### 2. Field Extractors (`extractors/`)
 
 **Base Class: `FieldExtractor`**
 ```python
@@ -85,7 +85,7 @@ class FieldExtractor(ABC):
 
 **Purpose:** Wraps strategies to provide field-specific interfaces and logging.
 
-### 3. Resume Extractor (`resume_parser/core/resume_extractor.py`)
+### 3. Resume Extractor (`core/resume_extractor.py`)
 
 ```python
 class ResumeExtractor:
@@ -98,7 +98,7 @@ class ResumeExtractor:
 
 Orchestrates multiple field extractors and returns `ResumeData` with extracted information.
 
-### 4. Resume Data Model (`resume_parser/models/resume_data.py`)
+### 4. Resume Data Model (`models/resume_data.py`)
 
 ```python
 @dataclass
@@ -112,7 +112,7 @@ class ResumeData:
 
 Immutable data class for extracted resume information.
 
-### 5. Framework (`resume_parser/core/framework.py`)
+### 5. Framework (`core/framework.py`)
 
 ```python
 class ResumeParserFramework:
@@ -126,104 +126,12 @@ High-level orchestrator that handles file parsing and text extraction.
 
 ## Testing & Usage
 
-### 1. Using `main.py` - CLI Interface
+Refer to `SETUP_GUIDE.md` sections:
+1. Running the Application
+2. Running Tests
+3. Explore extraction strategies
 
-**Basic Usage:**
-```bash
-python resume_parser/main.py <path_to_resume>
-```
-
-**Example:**
-```bash
-python resume_parser/main.py "path/to/resume.pdf"
-```
-
-**Features:**
-- Parses PDF, DOCX, DOC files
-- Uses default `NameExtractor`, `EmailExtractor`, `SkillsExtractor` with `RegexExtractionStrategy`
-- Outputs extracted data as JSON
-- Logs all operations to console and `logs/resume_parser.log`
-- Error handling for unsupported file types
-
-**Code Flow:**
-1. `build_resume_parser()` creates field extractors with default regex strategy
-2. `ResumeParserFramework` parses the file and orchestrates extraction
-3. Results printed as JSON dict
-
-### 2. Using `examples_strategies.py` - Demonstration
-
-**Run All Examples:**
-```bash
-python examples_strategies.py
-```
-
-**Examples Included:**
-
-1. **Example 1: Regex-Based Extraction**
-   - Direct strategy usage
-   - Fast, no API calls
-
-2. **Example 2: Explicit Regex Strategy**
-   - Shows field-specific configuration
-   - Logs strategy selection
-
-3. **Example 3: NER Strategy** (Placeholder)
-   - Demonstrates extensibility
-   - Ready for spaCy/transformer implementation
-
-4. **Example 4: LLM Strategy** (Google Gemini)
-   - Requires `GOOGLE_API_KEY` environment variable
-   - Shows intelligent extraction using LLM
-   - Falls back to regex on API failure
-
-5. **Example 5: Framework Integration**
-   - Shows wrapper extractors in action
-   - Demonstrates structured data output
-   - Default to regex strategy
-
-6. **Example 6: Hybrid Strategy**
-   - Mix different strategies per field
-   - Example: Regex for email, NER for names, LLM for skills
-
-### 3. Quick Test Script
-
-```python
-from resume_parser.extractors import NameExtractor, EmailExtractor, SkillsExtractor
-from resume_parser.core.resume_extractor import ResumeExtractor
-
-resume_text = """
-Jane Smith
-Email: jane@example.com
-Skills: Python, Docker, AWS
-"""
-
-extractors = {
-    "name": NameExtractor(),
-    "email": EmailExtractor(),
-    "skills": SkillsExtractor(),
-}
-
-result = ResumeExtractor(extractors).extract(resume_text)
-print(result.as_dict())
-```
-
-## Configuration Options
-
-### Using Different Strategies
-
-```python
-from resume_parser.extractors import NameExtractor
-from resume_parser.extractors.strategies import LLMExtractionStrategy
-
-# Override default strategy
-llm_strategy = LLMExtractionStrategy(api_key="your-key")
-name_extractor = NameExtractor(strategy=llm_strategy)
-```
-
-### Environment Variables
-
-- `GOOGLE_API_KEY` or `GEMINI_API_KEY` - For Google Gemini LLM extraction
-- `GEMINI_MODEL_NAME` - Gemini model to use (default: gemini-3-flash-preview)
+## Features
 
 ## LLM Caching - Performance & Cost Optimization
 
@@ -289,7 +197,7 @@ Logs are automatically saved to `logs/resume_parser.log` when using `configure_l
 ## File Structure
 
 ```
-resume_parser/
+
 ├── core/
 │   ├── framework.py          # ResumeParserFramework (orchestrator)
 │   ├── resume_extractor.py   # ResumeExtractor (field extraction)
@@ -334,15 +242,4 @@ resume_parser/
    - Cache clearing strategy for long-running applications
 
 4. **Enhanced Testing**
-   - Unit tests for each strategy
-   - Integration tests for complete workflow
-   - Fixture-based testing with sample resumes
-
-## Implemented Optimizations
-
-✅ **Single LLM Call Caching** (Completed)
-- Reduces API calls from 3 to 1 per resume
-- Results cached by text hash
-- Transparent to users - no code changes needed
-- All three extractors (name, email, skills) reuse the same cached API result
-- Significant cost and latency improvements for LLM-based extraction
+   - Implement future feature tests
