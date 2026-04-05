@@ -186,6 +186,18 @@ python run_tests.py --coverage
 # Open htmlcov/index.html in your browser
 ```
 
+## Explore extraction strategies
+```bash
+# Runs different extrac
+python examples_strategies.py 
+```
+Above script demonstrates examples for different extraction strategies.
+
+- RegexExtractionStrategy (Fallback when LLMExtractionStrategyfailes, fast, rule-based)
+- NERExtractionStrategy (Named Entity Recognition, requires spacy/transformers)
+- LLMExtractionStrategy (default,Large Language Model, requires API keys or local LLM)
+
+From line 215 to line 220 you can select various extraction strategies to test and explore.
 
 ## Troubleshooting
 
@@ -251,18 +263,18 @@ logging.basicConfig(level=logging.DEBUG)
 
 ```bash
 # Assuming you have a resume.pdf file
-python main.py resume.pdf
+python main.py -file_path resume.pdf
 ```
 
 ### Example 2: Parse Multiple Files
 
 ```bash
 # Create a batch script (Windows)
-for %f in (*.pdf) do python main.py "%f"
+for %f in (*.pdf) do python main.py  -file_path "%f"
 
 # Or process individually
-python main.py resume1.pdf
-python main.py resume2.docx
+python main.py -file_path resume1.pdf 
+python main.py -file_path resume2.docx
 ```
 
 ### Example 3: Test with Sample Data
@@ -276,69 +288,19 @@ Skills: Python, Django, PostgreSQL, AWS, Docker, Kubernetes
 Experience: 5+ years in web development" > sample_resume.txt
 
 # Parse it
-python main.py sample_resume.txt
+python main.py -file_path sample_resume.txt
 ```
 
-### Example 4: Using Different Strategies
 
-```python
-# test_strategies.py
-from resume_parser.extractors.strategies import RegexExtractionStrategy, LLMExtractionStrategy
 
-# Test regex extraction
-regex_strategy = RegexExtractionStrategy()
-result = regex_strategy.extract_skills("I know Python, JavaScript, and AWS")
-print("Regex skills:", result)
-
-# Test LLM extraction (requires API key)
-try:
-    llm_strategy = LLMExtractionStrategy()
-    result = llm_strategy.extract_skills("I know Python, JavaScript, and AWS")
-    print("LLM skills:", result)
-except Exception as e:
-    print("LLM extraction failed:", e)
-```
-
-### Example 5: Integration Test
-
-```python
-# test_integration.py
-from resume_parser.core.framework import ResumeParserFramework
-from resume_parser.extractors import NameExtractor, EmailExtractor, SkillsExtractor
-from resume_parser.core.resume_extractor import ResumeExtractor
-
-# Create sample resume text
-resume_text = """
-John Developer
-Senior Software Engineer
-Email: john.dev@techcorp.com
-Phone: (555) 123-4567
-
-Skills: Python, JavaScript, React, Node.js, AWS, Docker, Kubernetes, PostgreSQL
-"""
-
-# Test framework
-framework = ResumeParserFramework(
-    ResumeExtractor({
-        "name": NameExtractor(),
-        "email": EmailExtractor(),
-        "skills": SkillsExtractor()
-    })
-)
-
-result = framework.parse_resume_text(resume_text)
-print("Extracted data:", result.as_dict())
-```
 
 ## Next Steps
 
 Once setup is complete:
 
 1. **Explore the Codebase**: Read `README.md` for architecture details
-2. **Run Examples**: Try `examples_strategies.py` for different extraction methods
-3. **Customize Strategies**: Modify extraction logic in `extractors/strategies.py`
-4. **Add Tests**: Write tests for new features in `tests/`
-5. **Contribute**: Check the main README for contribution guidelines
+2. **Add Tests**: Write tests for new features in `tests/`
+
 
 ## Support
 
@@ -351,6 +313,3 @@ If you encounter issues:
 5. Check the test suite: `python run_tests.py`
 
 ---
-
-**🎉 Congratulations!** You're now ready to use the Resume Parser. Happy coding!</content>
-<parameter name="filePath">c:\Users\User\Desktop\Interview Assessment\PolicyReporter\resume_parser\SETUP_GUIDE.md
