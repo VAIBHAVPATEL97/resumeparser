@@ -8,11 +8,12 @@ This guide provides step-by-step instructions to set up and run the Resume Parse
 
 - [Prerequisites](#prerequisites)
 - [Detailed Setup](#detailed-setup)
-- [Configuration](#configuration)
 - [Running the Application](#running-the-application)
 - [Running Tests](#running-tests)
+- [Explore extraction strategies](#explore-extraction-strategies)
 - [Troubleshooting](#troubleshooting)
 - [Examples](#examples)
+- [Next Steps](#next-steps)
 
 ## Prerequisites
 
@@ -186,7 +187,7 @@ python run_tests.py --coverage
 # Open htmlcov/index.html in your browser
 ```
 
-## Explore extraction strategies
+### Explore extraction strategies
 ```bash
 # Runs different extrac
 python examples_strategies.py 
@@ -321,7 +322,7 @@ python main.py -file_path sample_resume.txt
 Once setup is complete:
 
 1. **Explore the Codebase**: Read `README.md` for architecture details
-2. **Add Tests**: Write tests for new features in `tests/`
+
 
 
 ## Support
