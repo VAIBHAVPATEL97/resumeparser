@@ -83,9 +83,9 @@ uv venv policyreporter
 
 # Activate (same as venv)
 # Windows:
-venv\Scripts\activate
+# venv\Scripts\activate
 # macOS/Linux:
-# source venv/bin/activate
+source policyreporter/bin/activate
 ```
 
 ### 3. Install Dependencies
