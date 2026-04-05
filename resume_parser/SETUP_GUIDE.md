@@ -40,6 +40,14 @@ pip --version
 git clone https://github.com/VAIBHAVPATEL97/resumeparser.git
 ```
 
+### Open resume_parser folder
+Note: This folder structure needs some cleanup.
+```bash
+cd resumeparser/resume_parser/
+```
+
+
+
 ## Detailed Setup
 
 ### 1. Project Directory Structure
