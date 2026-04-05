@@ -40,6 +40,14 @@ pip --version
 git clone https://github.com/VAIBHAVPATEL97/resumeparser.git
 ```
 
+### Open resume_parser folder
+Note: This folder structure needs some cleanup.
+```bash
+cd resumeparser/resume_parser/
+```
+
+
+
 ## Detailed Setup
 
 ### 1. Project Directory Structure
@@ -66,25 +74,26 @@ c:\Users\User\Desktop\Interview Assessment\PolicyReporter\resume_parser\
 #### Using uv (Modern Python Tooling)
 
 ```bash
+# Ensure you have pip installed
 # Install uv (if not already installed)
 pip install uv
 
 # Create and activate virtual environment
-uv venv
+uv venv policyreporter   
 
 # Activate (same as venv)
 # Windows:
-venv\Scripts\activate
+# venv\Scripts\activate
 # macOS/Linux:
-# source venv/bin/activate
+source policyreporter/bin/activate
 ```
 
 ### 3. Install Dependencies
 
 ```bash
 # Install all required packages
-pip install -r requirements.txt
-pip install -r requirements-test.txt
+uv pip install -r requirements.txt
+uv pip install -r requirements-test.txt
 ```
 
 ### 4. Environment Configuration
@@ -115,13 +124,13 @@ GEMINI_MODEL_NAME=gemini-3-flash-preview
 
 ```bash
 # Parse a resume file
-python <your-filepath>/main.py path/to/resume.pdf  # Note: Ensure main.py is accessible and replace path/to/resume.pdf with the actual path to your resume file
+python main.py -file_path path/to/resume.pdf  
 
 # Examples:
-python main.py "sample_resume.pdf"  # you will need sample resume PDF and Word documents for testing
-python main.py "John Doe Resume.docx"
-python main.py resume.doc
+python3 main.py -file_path software-engineer-resume.pdf
+python3 main.py -file_path sample_word_resume.docx
 ```
+**Logs from run is saved in current directory `logs` folder**
 
 ### Output Format
 
@@ -148,7 +157,7 @@ The parser outputs JSON with extracted information:
 
 ```bash
 # Using the test runner script
-python <your-filepath>/run_tests.py # Note: Ensure run_tests.py is accessible
+python run_tests.py # Note: Ensure run_tests.py is accessible
 
 # Or using pytest directly
 python -m pytest tests/ -v
@@ -159,6 +168,8 @@ python -m pytest tests/ -v
 ```bash
 # Unit tests only
 python run_tests.py --unit
+
+**Note:** A couple of unit tests will fail as the skills extraction might not match the asserted skills. This is intentional.
 
 # Integration tests only
 python run_tests.py --integration
@@ -175,18 +186,41 @@ python run_tests.py --coverage
 # Open htmlcov/index.html in your browser
 ```
 
-### Quick Test Verification
-
+## Explore extraction strategies
 ```bash
-# Run a quick smoke test
-python -c "
-from resume_parser.extractors.strategies import RegexExtractionStrategy
-strategy = RegexExtractionStrategy()
-result = strategy.extract_name('John Smith\njohn@email.com')
-print('✅ Test passed!' if result == 'John Smith' else '❌ Test failed!')
-"
+# Runs different extrac
+python examples_strategies.py 
 ```
 
+**Example Extraction Strategies Included:**
+
+From line 215 to line 220 you can select various extraction strategies to test and explore.
+
+1. **Example 1: Regex-Based Extraction**
+   - Direct strategy usage
+   - Fast, no API calls
+
+2. **Example 2: Explicit Regex Strategy**
+   - Shows field-specific configuration
+   - Logs strategy selection
+
+3. **Example 3: NER Strategy** (Placeholder)
+   - Demonstrates extensibility
+   - Ready for spaCy/transformer implementation
+
+4. **Example 4: LLM Strategy** (Google Gemini)
+   - Requires `GOOGLE_API_KEY` environment variable
+   - Shows intelligent extraction using LLM
+   - Falls back to regex on API failure
+
+5. **Example 5: Framework Integration** (Placeholder)
+   - Shows wrapper extractors in action
+   - Demonstrates structured data output
+   - Default to regex strategy
+
+6. **Example 6: Hybrid Strategy** (Placeholder)
+   - Mix different strategies per field
+   - Example: Regex for email, NER for names, LLM for skills
 ## Troubleshooting
 
 ### Common Issues
@@ -251,18 +285,18 @@ logging.basicConfig(level=logging.DEBUG)
 
 ```bash
 # Assuming you have a resume.pdf file
-python main.py resume.pdf
+python main.py -file_path resume.pdf
 ```
 
 ### Example 2: Parse Multiple Files
 
 ```bash
 # Create a batch script (Windows)
-for %f in (*.pdf) do python main.py "%f"
+for %f in (*.pdf) do python main.py  -file_path "%f"
 
 # Or process individually
-python main.py resume1.pdf
-python main.py resume2.docx
+python main.py -file_path resume1.pdf 
+python main.py -file_path resume2.docx
 ```
 
 ### Example 3: Test with Sample Data
@@ -276,69 +310,19 @@ Skills: Python, Django, PostgreSQL, AWS, Docker, Kubernetes
 Experience: 5+ years in web development" > sample_resume.txt
 
 # Parse it
-python main.py sample_resume.txt
+python main.py -file_path sample_resume.txt
 ```
 
-### Example 4: Using Different Strategies
 
-```python
-# test_strategies.py
-from resume_parser.extractors.strategies import RegexExtractionStrategy, LLMExtractionStrategy
 
-# Test regex extraction
-regex_strategy = RegexExtractionStrategy()
-result = regex_strategy.extract_skills("I know Python, JavaScript, and AWS")
-print("Regex skills:", result)
-
-# Test LLM extraction (requires API key)
-try:
-    llm_strategy = LLMExtractionStrategy()
-    result = llm_strategy.extract_skills("I know Python, JavaScript, and AWS")
-    print("LLM skills:", result)
-except Exception as e:
-    print("LLM extraction failed:", e)
-```
-
-### Example 5: Integration Test
-
-```python
-# test_integration.py
-from resume_parser.core.framework import ResumeParserFramework
-from resume_parser.extractors import NameExtractor, EmailExtractor, SkillsExtractor
-from resume_parser.core.resume_extractor import ResumeExtractor
-
-# Create sample resume text
-resume_text = """
-John Developer
-Senior Software Engineer
-Email: john.dev@techcorp.com
-Phone: (555) 123-4567
-
-Skills: Python, JavaScript, React, Node.js, AWS, Docker, Kubernetes, PostgreSQL
-"""
-
-# Test framework
-framework = ResumeParserFramework(
-    ResumeExtractor({
-        "name": NameExtractor(),
-        "email": EmailExtractor(),
-        "skills": SkillsExtractor()
-    })
-)
-
-result = framework.parse_resume_text(resume_text)
-print("Extracted data:", result.as_dict())
-```
 
 ## Next Steps
 
 Once setup is complete:
 
 1. **Explore the Codebase**: Read `README.md` for architecture details
-2. **Run Examples**: Try `examples_strategies.py` for different extraction methods
-3. **Customize Strategies**: Modify extraction logic in `extractors/strategies.py`
-4. **Add Tests**: Write tests for new features in `tests/`
-5. **Contribute**: Check the main README for contribution guidelines
+2. **Add Tests**: Write tests for new features in `tests/`
+
 
 ## Support
 
@@ -351,6 +335,3 @@ If you encounter issues:
 5. Check the test suite: `python run_tests.py`
 
 ---
-
-**🎉 Congratulations!** You're now ready to use the Resume Parser. Happy coding!</content>
-<parameter name="filePath">c:\Users\User\Desktop\Interview Assessment\PolicyReporter\resume_parser\SETUP_GUIDE.md
