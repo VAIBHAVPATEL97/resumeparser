@@ -202,6 +202,7 @@ Logs are automatically saved to `logs/resume_parser.log` when using `configure_l
 │   ├── framework.py          # ResumeParserFramework (orchestrator)
 │   ├── resume_extractor.py   # ResumeExtractor (field extraction)
 │   └── parser_factory.py      # File type detection
+│   └── resume_extractor.py      # Orchestrates multiple field extractors
 ├── extractors/
 │   ├── strategies.py          # ExtractionStrategy implementations
 │   ├── base.py               # FieldExtractor abstract class
@@ -213,11 +214,16 @@ Logs are automatically saved to `logs/resume_parser.log` when using `configure_l
 ├── parsers/
 │   ├── pdf_parser.py          # PDF text extraction
 │   └── word_parser.py         # DOCX/DOC text extraction
+│   └── base.py                # BaseParser abstract class
 ├── utils/
 │   └── logger.py              # Logging configuration
+├── tests/                     # Test suite
 ├── main.py                    # CLI entry point
+├── run_tests.py               # tests entry point
+├── example_strategies.py      # Explore extraction strategies
 ├── README.md                  # This file
 └── requirements.txt           # Dependencies
+└── requirements-test.txt      # Test Dependencies
 ```
 
 ## FUTURE ENHANCEMENTS
