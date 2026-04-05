@@ -74,11 +74,12 @@ c:\Users\User\Desktop\Interview Assessment\PolicyReporter\resume_parser\
 #### Using uv (Modern Python Tooling)
 
 ```bash
+# Ensure you have pip installed
 # Install uv (if not already installed)
 pip install uv
 
 # Create and activate virtual environment
-uv venv
+uv venv policyreporter   
 
 # Activate (same as venv)
 # Windows:
@@ -91,8 +92,8 @@ venv\Scripts\activate
 
 ```bash
 # Install all required packages
-pip install -r requirements.txt
-pip install -r requirements-test.txt
+uv pip install -r requirements.txt
+uv pip install -r requirements-test.txt
 ```
 
 ### 4. Environment Configuration
@@ -123,13 +124,14 @@ GEMINI_MODEL_NAME=gemini-3-flash-preview
 
 ```bash
 # Parse a resume file
-python <your-filepath>/main.py path/to/resume.pdf  # Note: Ensure main.py is accessible and replace path/to/resume.pdf with the actual path to your resume file
+python main.py path/to/resume.pdf  
 
 # Examples:
 python main.py "sample_resume.pdf"  # you will need sample resume PDF and Word documents for testing
 python main.py "John Doe Resume.docx"
 python main.py resume.doc
 ```
+**Logs from run is saved in current directory `logs` folder**
 
 ### Output Format
 
@@ -156,7 +158,7 @@ The parser outputs JSON with extracted information:
 
 ```bash
 # Using the test runner script
-python <your-filepath>/run_tests.py # Note: Ensure run_tests.py is accessible
+python run_tests.py # Note: Ensure run_tests.py is accessible
 
 # Or using pytest directly
 python -m pytest tests/ -v
@@ -167,6 +169,8 @@ python -m pytest tests/ -v
 ```bash
 # Unit tests only
 python run_tests.py --unit
+
+**Note:** A couple of unit tests will fail as the skills extraction might not match the asserted skills. This is intentional.
 
 # Integration tests only
 python run_tests.py --integration
@@ -183,17 +187,6 @@ python run_tests.py --coverage
 # Open htmlcov/index.html in your browser
 ```
 
-### Quick Test Verification
-
-```bash
-# Run a quick smoke test
-python -c "
-from resume_parser.extractors.strategies import RegexExtractionStrategy
-strategy = RegexExtractionStrategy()
-result = strategy.extract_name('John Smith\njohn@email.com')
-print('✅ Test passed!' if result == 'John Smith' else '❌ Test failed!')
-"
-```
 
 ## Troubleshooting
 
