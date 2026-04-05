@@ -124,12 +124,11 @@ GEMINI_MODEL_NAME=gemini-3-flash-preview
 
 ```bash
 # Parse a resume file
-python main.py path/to/resume.pdf  
+python main.py -file_path path/to/resume.pdf  
 
 # Examples:
-python main.py "sample_resume.pdf"  # you will need sample resume PDF and Word documents for testing
-python main.py "John Doe Resume.docx"
-python main.py resume.doc
+python3 main.py -file_path software-engineer-resume.pdf
+python3 main.py -file_path sample_word_resume.docx
 ```
 **Logs from run is saved in current directory `logs` folder**
 
