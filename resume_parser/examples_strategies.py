@@ -3,7 +3,7 @@ Usage examples for different extraction strategies.
 
 This demonstrates how to use the pluggable extraction strategies:
 - RegexExtractionStrategy (default, fast, rule-based)
-- NERExtractionStrategy (Named Entity Recognition, requires spacy/transformers)
+- NERExtractionStrategy (Named Entity Recognition, requires spacy/transformers) - Placeholder for future implementation
 - LLMExtractionStrategy (Large Language Model, requires API keys or local LLM)
 """
 
