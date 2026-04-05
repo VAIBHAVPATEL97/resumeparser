@@ -191,14 +191,36 @@ python run_tests.py --coverage
 # Runs different extrac
 python examples_strategies.py 
 ```
-Above script demonstrates examples for different extraction strategies.
 
-- RegexExtractionStrategy (Fallback when LLMExtractionStrategyfailes, fast, rule-based)
-- NERExtractionStrategy (Named Entity Recognition, requires spacy/transformers)
-- LLMExtractionStrategy (default,Large Language Model, requires API keys or local LLM)
+**Example Extraction Strategies Included:**
 
 From line 215 to line 220 you can select various extraction strategies to test and explore.
 
+1. **Example 1: Regex-Based Extraction**
+   - Direct strategy usage
+   - Fast, no API calls
+
+2. **Example 2: Explicit Regex Strategy**
+   - Shows field-specific configuration
+   - Logs strategy selection
+
+3. **Example 3: NER Strategy** (Placeholder)
+   - Demonstrates extensibility
+   - Ready for spaCy/transformer implementation
+
+4. **Example 4: LLM Strategy** (Google Gemini)
+   - Requires `GOOGLE_API_KEY` environment variable
+   - Shows intelligent extraction using LLM
+   - Falls back to regex on API failure
+
+5. **Example 5: Framework Integration** (Placeholder)
+   - Shows wrapper extractors in action
+   - Demonstrates structured data output
+   - Default to regex strategy
+
+6. **Example 6: Hybrid Strategy** (Placeholder)
+   - Mix different strategies per field
+   - Example: Regex for email, NER for names, LLM for skills
 ## Troubleshooting
 
 ### Common Issues
